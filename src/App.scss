@@ -1,0 +1,252 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@700&display=swap');
+
+$color_dark-green: #00474B;
+$color_green: #26C2AE;
+$color_medium-green: #C5E4E7;
+$color_light-green: #F3F9FA;
+$color_text-grey: #5E7A7D;
+$color_btn-hover: #9FE8DF;
+$color_btn-active: #26C2AE;
+$color_error: #E17457;
+
+.page {
+  font-family: 'Space Mono', monospace;
+  font-size: 16px;
+  line-height: 24px;
+  color: $color_text-grey;
+  background-color: $color_medium-green;
+
+  &__body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+  }
+
+  &__section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+.container {
+  max-width: 920px;
+  background-color: #fff;
+  box-shadow: 0px 32px 43px rgba(79, 166, 175, 0.200735);
+  border-radius: 25px;
+  display: grid;
+  grid-template-columns: 379px 413px;
+  align-items: center;
+  gap: 48px;
+  padding: 32px 32px 32px 48px;
+  box-sizing: border-box;
+}
+
+.header {
+  &__logo {
+    position: relative;
+    bottom: 88px;
+
+    &__img {
+      width: 100%;
+    }
+  }
+}
+
+.amount {
+  &__out {
+    height: 417px;
+    background-color: $color_dark-green;
+    border-radius: 15px;
+    padding: 40px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    &-container {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+  }
+
+  &__info {
+    &-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    &-title {
+      color: #fff;
+    }
+
+    &-person {
+      font-size: 13px;
+      line-height: 19px;
+    }
+
+    &-total,
+    &-perPerson {
+      font-size: 48px;
+      line-height: 71px;
+      text-align: right;
+      letter-spacing: -1px;
+      color: #26C2AE;
+    }
+
+  }
+
+}
+
+.input {
+  &__container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 39px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__label {
+    margin-bottom: 6px;
+
+    &-select {
+      margin-bottom: 16px;
+    }
+
+    &-error {
+      color: $color_error;
+    }
+  }
+
+  &__data {
+    height: 44px;
+    background-color: $color_light-green;
+    border: 2px solid transparent;
+    outline: none;
+    border-radius: 5px;
+    font-family: 'Space Mono';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 36px;
+    text-align: right;
+    color: $color_dark-green;
+    padding-right: 16px;
+    transition: all 0.3s;
+
+    &-persons {
+      background-image: url(./images/icon-person.svg);
+      background-repeat: no-repeat;
+      background-position: left 16px center;
+    }
+
+    &-bill {
+      background-image: url(./images/icon-dollar.svg);
+      background-repeat: no-repeat;
+      background-position: left 16px center;
+    }
+
+    &-custom {
+      width: 117px;
+      height: 48px;
+      box-sizing: border-box;
+
+      &::placeholder {
+        text-align: center;
+      }
+    }
+
+    &:focus {
+      border: 2px solid $color_green;
+    }
+
+    &::placeholder {
+      color: $color_dark-green;
+      // mix-blend-mode: normal;
+      // opacity: 0.35;
+    }
+
+    &:invalid {
+      border-color: $color_error;
+    }
+
+  }
+
+}
+
+.error__container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.buttons-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  row-gap: 16px;
+  column-gap: 14px;
+}
+
+.button {
+  font-family: 'Space Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 36px;
+  width: 117px;
+  height: 48px;
+  background: $color_dark-green;
+  color: #fff;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.3s;
+
+  &:hover {
+    color: $color_dark-green;
+    background-color: $color_btn-hover;
+  }
+
+  &__amount {
+    width: 117px;
+    height: 48px;
+    background: $color_dark-green;
+
+    &-active {
+      color: $color_dark-green;
+      background-color: $color_btn-active;
+    }
+  }
+
+  &__reset {
+    color: $color_dark-green;
+    background-color: $color_dark-green;
+    width: 100%;
+
+    &:disabled {
+      background-color: #0D686D;
+    }
+  }
+
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  appearance: textfield;
+}
