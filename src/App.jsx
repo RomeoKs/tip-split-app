@@ -39,7 +39,7 @@ function App() {
     });
   }
   const buttons = [5, 10, 15, 25, 50];
-  
+
   return (
     <>
       <div className="page page__body">
@@ -69,12 +69,6 @@ function App() {
                 <div className="input__container">
                   <div className="input__label input__label-select">Select Tip %</div>
                   <div className="buttons-container">
-                    {/* <button
-                      className="button button__amount button__amount-active">5%</button>
-                    <button className="button button__amount">10%</button>
-                    <button className="button button__amount">15%</button>
-                    <button className="button button__amount">25%</button>
-                    <button className="button button__amount">50%</button> */}
                     {buttons.map((button, index) => (
                       <button
                         className="button button__amount"
