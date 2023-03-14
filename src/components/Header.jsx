@@ -1,5 +1,3 @@
-import React from 'react';
-
 import logo from "../../src/images/logo.svg";
 
 export function Header() {
@@ -21,4 +19,4 @@ export function Header() {
       </div>
     </header>
   );
-}
+};
