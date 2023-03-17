@@ -171,12 +171,12 @@ $color_error: #E17457;
 
     &::placeholder {
       color: $color_dark-green;
-      // mix-blend-mode: normal;
-      // opacity: 0.35;
+      mix-blend-mode: normal;
+      opacity: 0.35;
     }
 
-    &:invalid {
-      border-color: $color_error;
+    &-error {
+      border-color: $color_error !important;
     }
 
   }
@@ -210,6 +210,7 @@ $color_error: #E17457;
   cursor: pointer;
   padding: 0;
   transition: all 0.3s;
+  text-transform: uppercase;
 
   &:hover {
     color: $color_dark-green;
@@ -234,6 +235,7 @@ $color_error: #E17457;
 
     &:disabled {
       background-color: #0D686D;
+      cursor: default;
     }
   }
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './App.scss';
 import classNames from "classnames";
 import { Header } from './components/Header';
@@ -6,28 +6,43 @@ import { Header } from './components/Header';
 
 function App() {
   const [data, setData] = useState({
-    bill: 0,
-    customTip: 0,
-    persons: 0
+    bill: '',
+    customTip: '',
+    persons: ''
   });
 
   const [placeholder, setPlaceHolder] = useState(0);
   const [isDisabled, setIsDisabled] = useState(true);
-  const [activeButtonIndex, setActiveButtonIndex] = useState(null);
+  const [activeButtonIndex, setActiveButtonIndex] = useState('');
   const [tip, setTip] = useState(0);
   const [total, setTotal] = useState(0);
 
+  const tipCalculator = useCallback((inputTip) => {
+    if (data.persons > 0) {
+      let totalPerPerson = (data.bill * (inputTip / 100)) / data.persons;
+      totalPerPerson = totalPerPerson.toFixed(2);
+      let totalAmount = (data.bill / data.persons) + Number(totalPerPerson);
+      totalAmount = totalAmount.toFixed(2);
+      setTip(totalPerPerson);
+      setTotal(totalAmount);
+    }
+  }, [data]);
+
   useEffect(() => {
-    const hasZeroValue = Object.values(data).some((value) => value !== 0);
+    const hasZeroValue = Object.values(data).some((value) => value !== '');
     setIsDisabled(hasZeroValue);
   }, [data]);
+
+  useEffect(() => {
+    tipCalculator(data.customTip);
+  }, [data, tipCalculator]);
 
   const Reset = () => {
     setPlaceHolder(0);
     setData({
-      bill: 0,
-      customTip: 0,
-      persons: 0
+      bill: '',
+      customTip: '',
+      persons: ''
     });
     setIsDisabled(true);
   };
@@ -41,23 +56,21 @@ function App() {
         [name]: value,
       };
     });
+
+    tipCalculator(data.customTip);
   };
 
-  const tipCalculator = (inputTip) => {
-    if (data.persons > 0) {
-      let totalPerPerson = (data.bill * (inputTip / 100)) / data.persons;
-      totalPerPerson = totalPerPerson.toFixed(2);
-      let totalAmount = (data.bill / data.persons) + Number(totalPerPerson);
-      totalAmount = totalAmount.toFixed(2);
-      setTip(totalPerPerson);
-      setTotal(totalAmount);
-    }
-  };
 
   const handleClickBtn = (tipButtonValue, index) => {
     tipCalculator(tipButtonValue);
     setActiveButtonIndex(index);
   };
+
+  const removeActiveClassBtn = () => {
+    setActiveButtonIndex('');
+    tipCalculator(data.customTip);
+  };
+
   const tipButtonsValues = [5, 10, 15, 25, 50];
 
   return (
@@ -77,21 +90,22 @@ function App() {
                   >
                     Bill
                   </label>
-                  {!data.bill &&
+                  {data.bill === '0' &&
                     <span className="input__label-error">Can&apos;t be zero</span>
                   }
                 </div>
                 <input
-                  className="input__data input__data-bill"
+                  className={classNames('input__data', 'input__data-bill', {
+                    'input__data-error': data.bill === '0'
+                  })}
                   type="number"
                   name="bill"
                   id="bill"
                   placeholder={placeholder}
-                  inputMode="decimal"
                   value={data.bill}
+                  min="0"
                   required
                   onChange={handleInputChange}
-                  invalid={data.bill}
                 />
               </div>
               <div className="input__container">
@@ -113,9 +127,10 @@ function App() {
                     type="number"
                     name='customTip'
                     placeholder="Custom"
-                    inputMode="decimal"
+                    min="0"
                     className="input__data input__data-custom"
-                    value={data.customTip}
+                    value={data.customTip ? data.customTip : ""}
+                    onClick={removeActiveClassBtn}
                     onChange={handleInputChange}
                   />
                 </div>
@@ -128,7 +143,7 @@ function App() {
                   >
                     Number of People
                   </label>
-                  {!data.persons &&
+                  {data.persons === "0" &&
                     <span className="input__label-error">Can&apos;t be zero</span>
                   }
                 </div>
@@ -138,7 +153,10 @@ function App() {
                   id="num_people"
                   placeholder={placeholder}
                   required
-                  className="input__data input__data-persons"
+                  min="0"
+                  className={classNames("input__data", "input__data-persons", {
+                    'input__data-error': data.persons === '0'
+                  })}
                   value={data.persons}
                   onChange={handleInputChange}
                 />
