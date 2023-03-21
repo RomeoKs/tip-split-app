@@ -13,20 +13,37 @@ function App() {
 
   const [placeholder, setPlaceHolder] = useState(0);
   const [isDisabled, setIsDisabled] = useState(true);
-  const [activeButtonIndex, setActiveButtonIndex] = useState('');
+  const [activeTip, setActiveTip] = useState(0);
+  const [activeButton, setActiveButton] = useState('');
   const [tip, setTip] = useState(0);
   const [total, setTotal] = useState(0);
 
-  const tipCalculator = useCallback((inputTip) => {
-    if (data.persons > 0) {
-      let totalPerPerson = (data.bill * (inputTip / 100)) / data.persons;
-      totalPerPerson = totalPerPerson.toFixed(2);
-      let totalAmount = (data.bill / data.persons) + Number(totalPerPerson);
-      totalAmount = totalAmount.toFixed(2);
+  const tipCalculator = useCallback(
+    (inputTip) => {
+      if (!data.persons || !data.bill) {
+        setTip(0);
+        setTotal(0);
+
+        return;
+      }
+
+      const totalPerPerson = (
+        (data.bill * (inputTip / 100)) /
+        data.persons
+      ).toFixed(2);
+      const totalAmount = (
+        data.bill / data.persons +
+        Number(totalPerPerson)
+      ).toFixed(2);
       setTip(totalPerPerson);
       setTotal(totalAmount);
-    }
-  }, [data]);
+    },
+    [data]
+  );
+
+  useEffect(() => {
+    tipCalculator(activeTip);
+  }, [activeTip, data, tip, tipCalculator, total]);
 
   useEffect(() => {
     const hasZeroValue = Object.values(data).some((value) => value !== '');
@@ -37,18 +54,25 @@ function App() {
     tipCalculator(data.customTip);
   }, [data, tipCalculator]);
 
-  const Reset = () => {
+
+  const resetCalculator = () => {
     setPlaceHolder(0);
     setData({
       bill: '',
       customTip: '',
       persons: ''
     });
+    setActiveTip(0);
     setIsDisabled(true);
+    setActiveButton('');
   };
 
   const handleInputChange = (event) => {
     const { value, name } = event.target;
+
+    if (name === "customTip") {
+      setActiveTip(value);
+    }
 
     setData((previousValue) => {
       return {
@@ -61,13 +85,14 @@ function App() {
   };
 
 
-  const handleClickBtn = (tipButtonValue, index) => {
+  const handleClickBtn = (tipButtonValue) => {
     tipCalculator(tipButtonValue);
-    setActiveButtonIndex(index);
+    setActiveButton(tipButtonValue);
+    setActiveTip(tipButtonValue);
   };
 
   const removeActiveClassBtn = () => {
-    setActiveButtonIndex('');
+    setActiveButton('');
     tipCalculator(data.customTip);
   };
 
@@ -91,7 +116,7 @@ function App() {
                     Bill
                   </label>
                   {data.bill === '0' &&
-                    <span className="input__label-error">Can&apos;t be zero</span>
+                    <span className="input__label-error">{`Can't be zero`}</span>
                   }
                 </div>
                 <input
@@ -111,14 +136,14 @@ function App() {
               <div className="input__container">
                 <div className="input__label input__label-select">Select Tip %</div>
                 <div className="buttons-container">
-                  {tipButtonsValues.map((tipButtonValue, index) => (
+                  {tipButtonsValues.map((tipButtonValue) => (
                     <button
                       className={classNames('button', 'button__amount', {
-                        "button__amount-active": index === activeButtonIndex,
+                        "button__amount-active": tipButtonValue === activeButton,
                       })}
-                      key={index}
+                      key={tipButtonValue}
                       value={tipButtonValue}
-                      onClick={() => handleClickBtn(tipButtonsValues[index], index)}
+                      onClick={() => handleClickBtn(tipButtonValue)}
                     >
                       {tipButtonValue}%
                     </button>
@@ -144,7 +169,7 @@ function App() {
                     Number of People
                   </label>
                   {data.persons === "0" &&
-                    <span className="input__label-error">Can&apos;t be zero</span>
+                    <span className="input__label-error">{`Can't be zero`}</span>
                   }
                 </div>
                 <input
@@ -182,7 +207,7 @@ function App() {
               <button
                 className="button button__reset"
                 disabled={!isDisabled}
-                onClick={() => Reset()}
+                onClick={resetCalculator}
               >
                 Reset
               </button>
