@@ -72,12 +72,6 @@ $color_error: #E17457;
 }
 
 .amount {
-  &__in {
-    @include onMobile {
-      margin: 0 8px;
-    }
-  }
-
   &__out {
     height: 417px;
     background-color: $color_dark-green;
