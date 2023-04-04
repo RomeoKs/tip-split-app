@@ -27,28 +27,26 @@ function App() {
         return;
       }
 
-      let totalPerPerson;
-      let totalAmount;
-      if (data.persons === 0) {
-        totalAmount = 0;
-        totalPerPerson = 0;
-      } else {
-        totalAmount = (data.bill / data.persons + Number(totalPerPerson)).toFixed(2);
-        totalPerPerson = (
-          (data.bill * (inputTip / 100)) /
-          data.persons
-        ).toFixed(2);
-      }
-      if (isNaN(totalPerPerson)) {
-        totalPerPerson = 0;
-      }
+      let totalPerPerson = (
+        (data.bill * (inputTip / 100)) /
+        data.persons
+      ).toFixed(2) || 0;
 
-      if (isNaN(totalAmount)) {
-        totalAmount = 0;
-      }
+      let totalAmount = (data.bill / data.persons + Number(totalPerPerson)).toFixed(2) || 0;
+
+      totalPerPerson = isNaN(totalPerPerson)
+        ? 0
+        : totalPerPerson;
+
+      totalAmount = isNaN(totalAmount)
+        ? 0
+        : totalAmount;
+
 
       setTip(totalPerPerson);
       setTotal(totalAmount);
+
+
     },
     [data]
   );
