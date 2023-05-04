@@ -113,12 +113,12 @@ function App() {
     <div className="page page__body">
       <Header />
       <main>
+        <h1 className='visually-hidden'>SPLITTER</h1>
         <div className="page__section amount">
           <div className="container">
             <div className="amount__in">
               <div className="input__container">
                 <div className="error__container">
-
                   <label
                     htmlFor="bill"
                     className="input__label"
@@ -185,7 +185,7 @@ function App() {
                 <input
                   type="number"
                   name="persons"
-                  id="num_people"
+                  id="persons"
                   placeholder={placeholder}
                   required
                   min="0"
